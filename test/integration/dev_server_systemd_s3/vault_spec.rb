@@ -7,7 +7,9 @@ end
 describe file('/etc/vault/config/server.hcl') do
   it { should be_a_file }
   expected =<<-EOF
-
+storage "s3" {
+  bucket = "com-saltstack-vault"
+}
 
 listener "tcp" {
   address = "0.0.0.0:8200"
