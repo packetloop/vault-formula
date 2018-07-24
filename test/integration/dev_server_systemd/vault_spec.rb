@@ -1,7 +1,7 @@
 describe command('/usr/local/bin/vault -version') do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should be_empty }
-  its(:stdout) { should match(/^Vault v[0-9\.]+ \('[0-9a-f]+'\)/) }
+  its(:stdout) { should match(/^Vault v0\.10\.[0-9\.]+ \('[0-9a-f]+'\)/) }
 end
 
 describe file('/etc/vault/config/server.hcl') do
@@ -38,6 +38,6 @@ end
 describe command('journalctl -u vault') do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should be_empty }
-  its(:stdout) { should match(/WARNING: Dev mode is enabled!/) }
+  its(:stdout) { should match(/WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory/) }
 end
 

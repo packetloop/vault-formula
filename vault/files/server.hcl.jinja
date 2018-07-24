@@ -1,6 +1,5 @@
 {%- from "vault/map.jinja" import vault with context -%}
-
-{%- if vault.backend -%}
+{%- if vault.backend is defined %}
 storage "{{ vault.backend.type }}"
 {%- if vault.backend.parameter %} {
 {%- for key,value in vault.backend.parameter.items() %}
@@ -8,6 +7,10 @@ storage "{{ vault.backend.type }}"
 {%- endfor %}
 }
 {%- endif -%}
+{%- endif %}
+
+{%- if vault.ui is defined %}
+ui = {{ vault.ui | lower }}
 {%- endif %}
 
 listener "{{ vault.listen_protocol }}" {

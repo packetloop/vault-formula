@@ -7,9 +7,11 @@ end
 describe file('/etc/vault/config/server.hcl') do
   it { should be_a_file }
   expected =<<-EOF
+
 storage "s3" {
   bucket = "com-saltstack-vault"
 }
+ui = true
 
 listener "tcp" {
   address = "0.0.0.0:8200"
@@ -40,6 +42,6 @@ end
 describe command('journalctl -u vault') do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should be_empty }
-  its(:stdout) { should match(/WARNING: Dev mode is enabled!/) }
+  its(:stdout) { should match(/WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory/) }
 end
 
