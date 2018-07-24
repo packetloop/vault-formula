@@ -56,6 +56,28 @@ suites:
           vault:
             service:
               type: systemd
+  - name: dev_server_systemd_s3
+    excludes:
+      - amazonlinux
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - vault
+            - vault.server
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - vault
+        vault.sls:
+          vault:
+            service:
+              type: systemd
+            backend:
+              type: s3
+              parameter:
+                bucket: com-saltstack-vault
   - name: dev_server_upstart_s3
     includes:
       - amazonlinux
