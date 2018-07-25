@@ -4,7 +4,8 @@ vault:
   listen_port: 8200
   listen_address: 0.0.0.0
   tls_disable: 0
-  service: upstart
+  service:
+    type: upstart
   tls_cert_file: {}
   tls_key_file: {}
   default_lease_ttl: 24h
