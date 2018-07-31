@@ -39,6 +39,8 @@ generate self signed SSL certs:
     - mode: 644
     - require:
       - file: /etc/vault/config
+    - watch_in:
+      - service: vault
 
 {%- if vault.service.type == 'systemd' %}
 /etc/systemd/system/vault.service:
