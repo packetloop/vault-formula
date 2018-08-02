@@ -78,6 +78,9 @@ suites:
               type: s3
               parameter:
                 bucket: com-saltstack-vault
+            telemetry:
+              parameter:
+                dogstatsd_addr: "localhost:8125"
             ui: true
   - name: dev_server_upstart_s3
     includes:

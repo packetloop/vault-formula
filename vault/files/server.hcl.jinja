@@ -17,6 +17,16 @@ ui = {{ vault.ui | lower }}
 api_addr = "{{ vault.api_addr }}"
 {%- endif %}
 
+{%- if vault.telemetry is defined %}
+{%- if vault.telemetry.parameter %}
+telemetry {
+{%- for key,value in vault.telemetry.parameter.items() %}
+  {{ key }} = "{{ value }}"
+{%- endfor %}
+}
+{%- endif -%}
+{%- endif %}
+
 listener "{{ vault.listen_protocol }}" {
   address = "{{ vault.listen_address }}:{{ vault.listen_port }}"
   tls_disable = {{ vault.tls_disable }}
