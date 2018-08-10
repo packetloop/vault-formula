@@ -42,6 +42,30 @@ generate self signed SSL certs:
     - watch_in:
       - service: vault
 
+{%- if vault.tls_cert_file_content is defined %}
+install_cert_file:
+  file.managed:
+    - name: {{ vault.tls_cert_file_content }}
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: vault:tls_cert_file_content
+    - watch_in:
+      - service: vault
+{%- endif %}
+
+{%- if vault.tls_key_file_content is defined %}
+install_cert_file:
+  file.managed:
+    - name: {{ vault.tls_key_file_content }}
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: vault:tls_key_file_content
+    - watch_in:
+      - service: vault
+{%- endif %}
+
 {%- if vault.service.type == 'systemd' %}
 /etc/systemd/system/vault.service:
   file.managed:
