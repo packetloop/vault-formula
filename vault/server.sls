@@ -43,27 +43,31 @@ generate self signed SSL certs:
       - service: vault
 
 {%- if vault.tls_cert_file_content is defined %}
-install_cert_file:
+{%- if vault.tls_cert_file is defined %}
+install_tls_cert_file:
   file.managed:
-    - name: {{ vault.tls_cert_file_content }}
+    - name: {{ vault.tls_cert_file }}
     - user: root
     - group: root
     - mode: 600
     - contents_pillar: vault:tls_cert_file_content
-    - watch_in:
-      - service: vault
+    - require:
+      - file: /etc/vault
+{%- endif %}
 {%- endif %}
 
 {%- if vault.tls_key_file_content is defined %}
-install_cert_file:
+{%- if vault.tls_key_file is defined %}
+install_tls_key_file:
   file.managed:
-    - name: {{ vault.tls_key_file_content }}
+    - name: {{ vault.tls_key_file }}
     - user: root
     - group: root
     - mode: 600
     - contents_pillar: vault:tls_key_file_content
-    - watch_in:
-      - service: vault
+    - require:
+      - file: /etc/vault
+{%- endif %}
 {%- endif %}
 
 {%- if vault.service.type == 'systemd' %}
@@ -100,3 +104,9 @@ vault:
     - onchanges:
       - cmd: install vault
       - file: /etc/vault/config/server.hcl
+      {%- if vault.tls_key_file_content is defined %}
+      - file: install_tls_key_file
+      {% endif %}
+      {%- if vault.tls_cert_file_content is defined %}
+      - file: install_tls_cert_file
+      {% endif %}

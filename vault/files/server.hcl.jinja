@@ -34,10 +34,10 @@ listener "{{ vault.listen_protocol }}" {
   tls_cert_file = "/etc/vault/{{ vault.self_signed_cert.hostname }}.pem"
   tls_key_file = "/etc/vault/{{ vault.self_signed_cert.hostname }}-nopass.key"
 {% else %}
-{%- if vault.tls_cert_file %}
+{%- if vault.tls_cert_file is defined %}
   tls_cert_file = "{{ vault.tls_cert_file }}"
 {% endif -%}
-{%- if vault.tls_key_file %}
+{%- if vault.tls_key_file is defined %}
   tls_key_file = "{{ vault.tls_key_file }}"
 {% endif -%}
 {% endif %}
