@@ -6,7 +6,6 @@ driver:
 
 verifier:
   name: inspec
-  format: doc
 
 provisioner:
   name: salt_solo
@@ -32,8 +31,8 @@ platforms:
   - name: amazonlinux
     driver_config:
       provision_command:
-        - yum install -y epel-release
-      image: amazonlinux:latest
+        - sudo yum install -y epel-release
+      image: amazonlinux:2018.03
       platform: rhel
       run_command: /sbin/init
 
@@ -102,4 +101,5 @@ suites:
               type: upstart
             backend:
               type: s3
-              bucket: com-saltstack-vault
+              parameter:
+                bucket: com-saltstack-vault

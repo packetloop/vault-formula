@@ -8,9 +8,10 @@ describe file('/etc/vault/config/server.hcl') do
   it { should be_a_file }
   expected = <<-EOF
 
-backend "s3" {
+storage "s3" {
   bucket = "com-saltstack-vault"
 }
+
 listener "tcp" {
   address = "0.0.0.0:8200"
   tls_disable = 0
@@ -55,6 +56,5 @@ end
 
 describe file('/var/log/vault.log') do
   it { should be_a_file }
-  its(:content) { should match(/WARNING: Dev mode is enabled!/) }
+  its(:content) { should match(/WARNING! dev mode is enabled!/) }
 end
-
