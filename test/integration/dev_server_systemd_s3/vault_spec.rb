@@ -12,6 +12,9 @@ storage "s3" {
   bucket = "com-saltstack-vault"
 }
 ui = true
+telemetry {
+  dogstatsd_addr = "localhost:8125"
+}
 
 listener "tcp" {
   address = "0.0.0.0:8200"

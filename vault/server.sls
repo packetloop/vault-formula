@@ -10,7 +10,7 @@
 
 generate self signed SSL certs:
   cmd.run:
-    - name: bash /usr/local/bin/cert-gen.sh {{ vault.self_signed_cert.hostname }} {{ vault.self_signed_cert.password }}
+    - name: bash /usr/local/bin/self-cert-gen.sh {{ vault.self_signed_cert.hostname }} {{ vault.self_signed_cert.password }}
     - cwd: /etc/vault
     - require:
       - file: /usr/local/bin/self-cert-gen.sh
@@ -39,6 +39,36 @@ generate self signed SSL certs:
     - mode: 644
     - require:
       - file: /etc/vault/config
+    - watch_in:
+      - service: vault
+
+{%- if vault.tls_cert_file_content is defined %}
+{%- if vault.tls_cert_file is defined %}
+install_tls_cert_file:
+  file.managed:
+    - name: {{ vault.tls_cert_file }}
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: vault:tls_cert_file_content
+    - require:
+      - file: /etc/vault
+{%- endif %}
+{%- endif %}
+
+{%- if vault.tls_key_file_content is defined %}
+{%- if vault.tls_key_file is defined %}
+install_tls_key_file:
+  file.managed:
+    - name: {{ vault.tls_key_file }}
+    - user: root
+    - group: root
+    - mode: 600
+    - contents_pillar: vault:tls_key_file_content
+    - require:
+      - file: /etc/vault
+{%- endif %}
+{%- endif %}
 
 {%- if vault.service.type == 'systemd' %}
 /etc/systemd/system/vault.service:
@@ -74,3 +104,9 @@ vault:
     - onchanges:
       - cmd: install vault
       - file: /etc/vault/config/server.hcl
+      {%- if vault.tls_key_file_content is defined %}
+      - file: install_tls_key_file
+      {% endif %}
+      {%- if vault.tls_cert_file_content is defined %}
+      - file: install_tls_cert_file
+      {% endif %}

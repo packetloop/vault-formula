@@ -6,8 +6,6 @@ vault:
   tls_disable: 0
   service:
     type: upstart
-  tls_cert_file: {}
-  tls_key_file: {}
   default_lease_ttl: 24h
   max_lease_ttl: 24h
   self_signed_cert:
