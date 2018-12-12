@@ -28,7 +28,7 @@ To use it, just include *vault.server* in your *top.sls*, and configure it using
 ::
 
   vault:
-    version: 0.7.0
+    version: 1.0.0
     listen_protocol: tcp
     listen_port: 8200
     listen_address: 0.0.0.0
@@ -41,6 +41,37 @@ To use it, just include *vault.server* in your *top.sls*, and configure it using
     dev_mode: true
     service:
       type: systemd
+
+``vault.approle_config.sls``
+----------------------------
+
+With a fresh Vault server install, you would have to run approle_config state
+separately after manually initialising and unseal Vault and this cannot be
+avoided.
+
+::
+
+  vault:
+    version: 1.0.0
+    listen_protocol: tcp
+    listen_port: 8200
+    listen_address: 0.0.0.0
+    tls_disable: 1
+    default_lease_ttl: 24h
+    max_lease_ttl: 24h
+    self_signed_cert:
+      enabled: false
+    backend:
+      type: consul
+      parameter:
+        address: "127.0.0.1:8500"
+        path: vault/
+    telemetry:
+      parameter:
+        dogstatsd_addr: "localhost:8125"
+    dev_mode: false
+    addr: http://127.0.0.1:8200
+    token: xxxx
 
 Testing
 =======
