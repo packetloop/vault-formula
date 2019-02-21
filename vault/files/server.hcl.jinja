@@ -45,3 +45,7 @@ listener "{{ vault.listen_protocol }}" {
 
 default_lease_ttl="{{ vault.default_lease_ttl }}"
 max_lease_ttl="{{ vault.max_lease_ttl }}"
+
+{%- if vault.api_addr is defined %}
+api_addr = "{{ vault.api_addr }}"
+{% endif %}
