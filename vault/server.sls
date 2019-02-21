@@ -110,3 +110,7 @@ vault:
       {%- if vault.tls_cert_file_content is defined %}
       - file: install_tls_cert_file
       {% endif %}
+
+vault-init:
+  cmd.run:
+    - name: echo 'If this is a fresh install or vault has restarted, please make sure you run vault init and unseal Vault'
